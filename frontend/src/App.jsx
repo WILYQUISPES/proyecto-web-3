@@ -1,35 +1,35 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import ProtectedRoute from './components/ProtectedRoute';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
-import Products from './pages/Products';
-import Suppliers from './pages/Suppliers';
-import Materials from './pages/Materials';
-import Sales from './pages/Sales';
-import Finance from './pages/Finance';
-import Users from './pages/Users';
-import Logs from './pages/Logs';
-import Report from './pages/Report';
+import BarraNavegacion from './components/BarraNavegacion';
+import RutaProtegida from './components/RutaProtegida';
+import Ingreso from './pages/Ingreso';
+import Registro from './pages/Registro';
+import Panel from './pages/Panel';
+import Productos from './pages/Productos';
+import Proveedores from './pages/Proveedores';
+import Materiales from './pages/Materiales';
+import Ventas from './pages/Ventas';
+import Finanzas from './pages/Finanzas';
+import Usuarios from './pages/Usuarios';
+import Bitacora from './pages/Bitacora';
+import Reporte from './pages/Reporte';
 
 export default function App() {
   return (
     <>
-      <Navbar />
+      <BarraNavegacion />
       <Routes>
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-        <Route path="/productos" element={<ProtectedRoute><Products /></ProtectedRoute>} />
-        <Route path="/materias-primas" element={<ProtectedRoute><Materials /></ProtectedRoute>} />
-        <Route path="/proveedores" element={<ProtectedRoute><Suppliers /></ProtectedRoute>} />
-        <Route path="/caja" element={<ProtectedRoute><Sales /></ProtectedRoute>} />
-        <Route path="/finanzas" element={<ProtectedRoute role="admin"><Finance /></ProtectedRoute>} />
-        <Route path="/reporte" element={<ProtectedRoute><Report /></ProtectedRoute>} />
-        <Route path="/usuarios" element={<ProtectedRoute role="admin"><Users /></ProtectedRoute>} />
-        <Route path="/logs" element={<ProtectedRoute role="admin"><Logs /></ProtectedRoute>} />
+        <Route path="/login" element={<Ingreso />} />
+        <Route path="/register" element={<Registro />} />
+        <Route path="/dashboard" element={<RutaProtegida><Panel /></RutaProtegida>} />
+        <Route path="/productos" element={<RutaProtegida><Productos /></RutaProtegida>} />
+        <Route path="/materias-primas" element={<RutaProtegida><Materiales /></RutaProtegida>} />
+        <Route path="/proveedores" element={<RutaProtegida><Proveedores /></RutaProtegida>} />
+        <Route path="/caja" element={<RutaProtegida><Ventas /></RutaProtegida>} />
+        <Route path="/finanzas" element={<RutaProtegida role="admin"><Finanzas /></RutaProtegida>} />
+        <Route path="/reporte" element={<RutaProtegida><Reporte /></RutaProtegida>} />
+        <Route path="/usuarios" element={<RutaProtegida role="admin"><Usuarios /></RutaProtegida>} />
+        <Route path="/logs" element={<RutaProtegida role="admin"><Bitacora /></RutaProtegida>} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </>

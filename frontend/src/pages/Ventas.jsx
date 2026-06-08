@@ -134,7 +134,7 @@ function generateVoucherPDF(sale) {
   doc.save(`pasofirme_voucher_${sale.sale_number}.pdf`);
 }
 
-export default function Sales() {
+export default function Ventas() {
   const { user } = useAuth();
   const [items, setItems] = useState([]);
   const [products, setProducts] = useState([]);

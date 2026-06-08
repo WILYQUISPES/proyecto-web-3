@@ -15,7 +15,7 @@ export function getStrength(pwd) {
   return { score, level, label };
 }
 
-export default function PasswordStrength({ password }) {
+export default function FuerzaContrasena({ password }) {
   const { score, level, label } = getStrength(password);
   const pct = Math.min(100, (score / 6) * 100);
   return (

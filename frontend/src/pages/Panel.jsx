@@ -53,7 +53,7 @@ function StatCard({ label, num, suffix = '', accent = false, meta, currency = nu
   );
 }
 
-export default function Dashboard() {
+export default function Panel() {
   const { user } = useAuth();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);

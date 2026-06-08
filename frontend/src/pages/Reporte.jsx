@@ -5,7 +5,7 @@ import autoTable from 'jspdf-autotable';
 import client from '../api/client';
 import { useAuth } from '../context/AuthContext';
 
-export default function Report() {
+export default function Reporte() {
   const { user } = useAuth();
   const [items, setItems] = useState([]);
   const [meta, setMeta] = useState({ types: [], materials: [] });

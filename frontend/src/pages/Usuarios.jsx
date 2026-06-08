@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Power } from 'lucide-react';
 import client from '../api/client';
 
-export default function Users() {
+export default function Usuarios() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 

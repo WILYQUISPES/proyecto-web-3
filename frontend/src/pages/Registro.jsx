@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import client from '../api/client';
-import PasswordStrength, { getStrength } from '../components/PasswordStrength';
+import FuerzaContrasena, { getStrength } from '../components/FuerzaContrasena';
 
-export default function Register() {
+export default function Registro() {
   const navigate = useNavigate();
   const [form, setForm] = useState({ username: '', email: '', password: '', password2: '' });
   const [error, setError] = useState('');
@@ -96,7 +96,7 @@ export default function Register() {
             <label className="field-label">Contraseña</label>
             <input className="input" type="password" value={form.password}
               onChange={(e) => set('password', e.target.value)} />
-            <PasswordStrength password={form.password} />
+            <FuerzaContrasena password={form.password} />
           </div>
 
           <div className="field">

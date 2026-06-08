@@ -14,7 +14,7 @@ const EMPTY = {
   description: ''
 };
 
-export default function Products() {
+export default function Productos() {
   const { user } = useAuth();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);

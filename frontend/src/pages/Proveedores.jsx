@@ -1,29 +1,27 @@
 import { useEffect, useState } from 'react';
-import { Plus, Edit3, Trash2, RotateCcw, X } from 'lucide-react';
+import { Plus, Edit3, Trash2, RotateCcw, X, Phone, Mail, MapPin } from 'lucide-react';
 import client from '../api/client';
 import { useAuth } from '../context/AuthContext';
 
 const EMPTY = {
   name: '',
-  unit: '',
-  stock: '',
-  unit_cost: '',
-  supplier_id: '',
-  description: ''
+  contact_name: '',
+  phone: '',
+  email: '',
+  address: '',
+  ruc: '',
+  notes: ''
 };
 
-export default function Materials() {
+export default function Proveedores() {
   const { user } = useAuth();
   const [items, setItems] = useState([]);
-  const [units, setUnits] = useState([]);
-  const [suppliers, setSuppliers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showDrawer, setShowDrawer] = useState(false);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(EMPTY);
   const [formError, setFormError] = useState('');
   const [search, setSearch] = useState('');
-  const [filterSupplier, setFilterSupplier] = useState('');
   const [includeDeleted, setIncludeDeleted] = useState(false);
 
   function set(k, v) { setForm({ ...form, [k]: v }); }
@@ -33,38 +31,31 @@ export default function Materials() {
     try {
       const params = {};
       if (search.trim()) params.search = search.trim();
-      if (filterSupplier) params.supplier_id = filterSupplier;
       if (includeDeleted && user.role === 'admin') params.includeDeleted = true;
-      const r = await client.get('/materials', { params });
+      const r = await client.get('/suppliers', { params });
       setItems(r.data);
     } finally { setLoading(false); }
   }
 
-  useEffect(() => {
-    client.get('/materials/meta/units').then((r) => setUnits(r.data.units));
-    client.get('/suppliers').then((r) => setSuppliers(r.data));
-    load();
-  }, []);
+  useEffect(() => { load(); }, []);
 
   function openCreate() {
     setEditing(null); setForm(EMPTY); setFormError(''); setShowDrawer(true);
   }
-  function openEdit(m) {
-    setEditing(m);
+  function openEdit(s) {
+    setEditing(s);
     setForm({
-      name: m.name || '', unit: m.unit || '',
-      stock: m.stock ?? '', unit_cost: m.unit_cost ?? '',
-      supplier_id: m.supplier_id ?? '',
-      description: m.description || ''
+      name: s.name || '', contact_name: s.contact_name || '',
+      phone: s.phone || '', email: s.email || '',
+      address: s.address || '', ruc: s.ruc || '', notes: s.notes || ''
     });
     setFormError(''); setShowDrawer(true);
   }
 
   function validar() {
     if (!form.name.trim()) return 'El nombre es obligatorio';
-    if (!form.unit) return 'La unidad es obligatoria';
-    if (form.stock === '' || isNaN(form.stock) || form.stock < 0) return 'Stock inválido';
-    if (form.unit_cost === '' || isNaN(form.unit_cost) || form.unit_cost < 0) return 'Costo inválido';
+    if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) return 'Email inválido';
+    if (form.phone && !/^[0-9+\-\s()]*$/.test(form.phone)) return 'Teléfono inválido';
     return null;
   }
 
@@ -76,15 +67,16 @@ export default function Materials() {
 
     const payload = {
       name: form.name.trim(),
-      unit: form.unit,
-      stock: Number(form.stock),
-      unit_cost: Number(form.unit_cost),
-      supplier_id: form.supplier_id ? Number(form.supplier_id) : null,
-      description: form.description.trim() || null
+      contact_name: form.contact_name.trim() || null,
+      phone: form.phone.trim() || null,
+      email: form.email.trim() || null,
+      address: form.address.trim() || null,
+      ruc: form.ruc.trim() || null,
+      notes: form.notes.trim() || null
     };
     try {
-      if (editing) await client.put(`/materials/${editing.id}`, payload);
-      else await client.post('/materials', payload);
+      if (editing) await client.put(`/suppliers/${editing.id}`, payload);
+      else await client.post('/suppliers', payload);
       setShowDrawer(false);
       await load();
     } catch (err) {
@@ -92,47 +84,41 @@ export default function Materials() {
     }
   }
 
-  async function onDelete(m) {
-    if (!window.confirm(`¿Eliminar material "${m.name}"?`)) return;
-    await client.delete(`/materials/${m.id}`);
+  async function onDelete(s) {
+    if (!window.confirm(`¿Eliminar proveedor "${s.name}"?`)) return;
+    await client.delete(`/suppliers/${s.id}`);
     await load();
   }
 
-  async function onRestore(m) {
-    await client.post(`/materials/${m.id}/restore`);
+  async function onRestore(s) {
+    await client.post(`/suppliers/${s.id}/restore`);
     await load();
   }
-
-  const formatGs = (n) => Number(n).toLocaleString('es-BO');
 
   return (
     <div className="page">
       <header className="page-header">
         <div className="page-header-left">
-          <div className="page-subtitle">№ 09 · Inventario de insumos</div>
+          <div className="page-subtitle">№ 08 · Cadena de suministro</div>
           <h1 className="page-title">
-            Materia <em>prima</em>.
+            Proveedores <em>de confianza</em>.
           </h1>
         </div>
         <button className="btn btn-primary" onClick={openCreate}>
           <Plus size={15} strokeWidth={1.5} />
-          Nuevo insumo
+          Nuevo proveedor
         </button>
       </header>
 
       <div className="toolbar">
         <input
           className="input"
-          placeholder="Buscar insumo…"
+          placeholder="Buscar por nombre, contacto o email…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && load()}
-          style={{ flex: '1 1 240px', maxWidth: 320 }}
+          style={{ flex: '1 1 280px', maxWidth: 380 }}
         />
-        <select className="input input-boxed" value={filterSupplier} onChange={(e) => setFilterSupplier(e.target.value)} style={{ width: 'auto', minWidth: 200 }}>
-          <option value="">Todos los proveedores</option>
-          {suppliers.filter((s) => s.is_active).map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
-        </select>
         {user.role === 'admin' && (
           <label className="check">
             <input type="checkbox" checked={includeDeleted} onChange={(e) => setIncludeDeleted(e.target.checked)} />
@@ -148,41 +134,39 @@ export default function Materials() {
           <table className="table">
             <thead>
               <tr>
-                <th>№</th><th>Insumo</th><th>Unidad</th>
-                <th className="text-right">Stock</th>
-                <th className="text-right">Costo unit. Bs</th>
-                <th>Proveedor</th>
+                <th>№</th><th>Proveedor</th><th>Contacto</th>
+                <th>Teléfono</th><th>Email</th><th>NIT</th>
                 <th>Estado</th><th></th>
               </tr>
             </thead>
             <tbody>
               {items.length === 0 && <tr><td colSpan="8"><p className="empty-state">Sin resultados.</p></td></tr>}
-              {items.map((m) => (
-                <tr key={m.id} className={m.is_active ? '' : 'row-deleted'}>
-                  <td className="col-id" data-label="№">{String(m.id).padStart(3, '0')}</td>
-                  <td className="col-model" data-label="Insumo">{m.name}</td>
-                  <td className="col-meta" data-label="Unidad">{m.unit}</td>
-                  <td className="col-price" data-label="Stock">{m.stock}</td>
-                  <td className="col-price" data-label="Costo"><span className="currency">Bs</span>{formatGs(m.unit_cost)}</td>
-                  <td className="col-meta" data-label="Proveedor">{m.supplier_name || '—'}</td>
+              {items.map((s) => (
+                <tr key={s.id} className={s.is_active ? '' : 'row-deleted'}>
+                  <td className="col-id" data-label="№">{String(s.id).padStart(3, '0')}</td>
+                  <td className="col-model" data-label="Proveedor">{s.name}</td>
+                  <td className="col-meta" data-label="Contacto">{s.contact_name || '—'}</td>
+                  <td className="col-meta" data-label="Teléfono">{s.phone || '—'}</td>
+                  <td className="col-meta" data-label="Email">{s.email || '—'}</td>
+                  <td className="col-meta" data-label="NIT">{s.ruc || '—'}</td>
                   <td data-label="Estado">
-                    <span className={`status ${m.is_active ? '' : 'inactive'}`}>
-                      {m.is_active ? 'Activo' : 'Eliminado'}
+                    <span className={`status ${s.is_active ? '' : 'inactive'}`}>
+                      {s.is_active ? 'Activo' : 'Eliminado'}
                     </span>
                   </td>
                   <td data-label="">
                     <div className="row-actions">
-                      {m.is_active ? (
+                      {s.is_active ? (
                         <>
-                          <button className="icon-btn" onClick={() => openEdit(m)} title="Editar">
+                          <button className="icon-btn" onClick={() => openEdit(s)} title="Editar">
                             <Edit3 size={13} strokeWidth={1.5} />
                           </button>
-                          <button className="icon-btn danger" onClick={() => onDelete(m)} title="Eliminar">
+                          <button className="icon-btn danger" onClick={() => onDelete(s)} title="Eliminar">
                             <Trash2 size={13} strokeWidth={1.5} />
                           </button>
                         </>
                       ) : user.role === 'admin' && (
-                        <button className="icon-btn" onClick={() => onRestore(m)} title="Restaurar">
+                        <button className="icon-btn" onClick={() => onRestore(s)} title="Restaurar">
                           <RotateCcw size={13} strokeWidth={1.5} />
                         </button>
                       )}
@@ -202,9 +186,9 @@ export default function Materials() {
             <header className="drawer-header">
               <div>
                 <div className="drawer-eyebrow eyebrow">
-                  {editing ? `Editando № ${String(editing.id).padStart(3, '0')}` : 'Nuevo insumo'}
+                  {editing ? `Editando № ${String(editing.id).padStart(3, '0')}` : 'Nuevo proveedor'}
                 </div>
-                <h2 className="drawer-title">{editing ? editing.name : 'Nueva materia prima'}</h2>
+                <h2 className="drawer-title">{editing ? editing.name : 'Nuevo proveedor'}</h2>
               </div>
               <button className="drawer-close" onClick={() => setShowDrawer(false)}>
                 <X size={15} strokeWidth={1.5} />
@@ -216,38 +200,41 @@ export default function Materials() {
 
               <div className="drawer-grid">
                 <div className="field full">
-                  <label className="field-label">Nombre del insumo *</label>
+                  <label className="field-label">Razón social / nombre *</label>
                   <input className="input input-boxed" value={form.name}
                     onChange={(e) => set('name', e.target.value)} maxLength={100} required />
                 </div>
                 <div className="field">
-                  <label className="field-label">Unidad *</label>
-                  <select className="input input-boxed" value={form.unit} onChange={(e) => set('unit', e.target.value)} required>
-                    <option value="">— Elegir —</option>
-                    {units.map((u) => <option key={u} value={u}>{u}</option>)}
-                  </select>
+                  <label className="field-label">Persona de contacto</label>
+                  <input className="input input-boxed" value={form.contact_name}
+                    onChange={(e) => set('contact_name', e.target.value)} maxLength={80} />
                 </div>
                 <div className="field">
-                  <label className="field-label">Proveedor</label>
-                  <select className="input input-boxed" value={form.supplier_id} onChange={(e) => set('supplier_id', e.target.value)}>
-                    <option value="">— Sin asignar —</option>
-                    {suppliers.filter((s) => s.is_active).map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
-                  </select>
+                  <label className="field-label">NIT</label>
+                  <input className="input input-boxed" value={form.ruc}
+                    onChange={(e) => set('ruc', e.target.value)} maxLength={30}
+                    placeholder="1234567890" />
                 </div>
                 <div className="field">
-                  <label className="field-label">Stock *</label>
-                  <input className="input input-boxed" type="number" min="0" step="0.01"
-                    value={form.stock} onChange={(e) => set('stock', e.target.value)} required />
+                  <label className="field-label">Teléfono</label>
+                  <input className="input input-boxed" value={form.phone}
+                    onChange={(e) => set('phone', e.target.value)} maxLength={30}
+                    placeholder="+591 72345678" />
                 </div>
                 <div className="field">
-                  <label className="field-label">Costo unitario Bs *</label>
-                  <input className="input input-boxed" type="number" min="0" step="100"
-                    value={form.unit_cost} onChange={(e) => set('unit_cost', e.target.value)} required />
+                  <label className="field-label">Email</label>
+                  <input className="input input-boxed" type="email" value={form.email}
+                    onChange={(e) => set('email', e.target.value)} />
                 </div>
                 <div className="field full">
-                  <label className="field-label">Descripción</label>
+                  <label className="field-label">Dirección</label>
+                  <input className="input input-boxed" value={form.address}
+                    onChange={(e) => set('address', e.target.value)} maxLength={200} />
+                </div>
+                <div className="field full">
+                  <label className="field-label">Notas</label>
                   <textarea className="input input-boxed" rows="3" maxLength={500}
-                    value={form.description} onChange={(e) => set('description', e.target.value)} />
+                    value={form.notes} onChange={(e) => set('notes', e.target.value)} />
                 </div>
               </div>
 
@@ -256,7 +243,7 @@ export default function Materials() {
                   Cancelar
                 </button>
                 <button type="submit" className="btn btn-primary">
-                  {editing ? 'Guardar cambios' : 'Crear insumo'}
+                  {editing ? 'Guardar cambios' : 'Crear proveedor'}
                 </button>
               </div>
             </form>

@@ -5,7 +5,7 @@ import client from '../api/client';
 import { useAuth } from '../context/AuthContext';
 import Captcha from '../components/Captcha';
 
-export default function Login() {
+export default function Ingreso() {
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useAuth();

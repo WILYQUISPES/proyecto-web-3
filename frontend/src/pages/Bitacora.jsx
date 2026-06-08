@@ -3,7 +3,7 @@ import client from '../api/client';
 
 const EVENTS = ['', 'LOGIN', 'LOGOUT', 'LOGIN_FAIL', 'LOGIN_FAIL_CAPTCHA'];
 
-export default function Logs() {
+export default function Bitacora() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('');

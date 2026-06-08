@@ -36,7 +36,7 @@ function PeriodCard({ label, period, accent }) {
   );
 }
 
-export default function Finance() {
+export default function Finanzas() {
   const { user } = useAuth();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);

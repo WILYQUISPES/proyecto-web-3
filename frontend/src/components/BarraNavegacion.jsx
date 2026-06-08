@@ -2,7 +2,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { LogOut } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
-export default function Navbar() {
+export default function BarraNavegacion() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
