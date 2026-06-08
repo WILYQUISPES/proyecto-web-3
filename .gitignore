@@ -1,0 +1,18 @@
+node_modules/
+dist/
+build/
+.env
+*.log
+*.tmp
+
+# SQLite
+backend/data/*.db
+backend/data/*.db-journal
+backend/data/*.db-wal
+backend/data/*.db-shm
+
+# Editor
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
