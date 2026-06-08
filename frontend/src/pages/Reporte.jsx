@@ -164,7 +164,7 @@ export default function Reporte() {
         </div>
         <div className="report-summary-item">
           <div className="num" style={{ color: 'var(--cognac)', fontStyle: 'italic' }}>
-            ₲ {formatGs(stats.valor)}
+            Bs {formatGs(stats.valor)}
           </div>
           <div className="label">Valor inventario</div>
         </div>

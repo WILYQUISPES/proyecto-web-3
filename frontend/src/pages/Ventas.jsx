@@ -453,7 +453,7 @@ export default function Ventas() {
                     <thead>
                       <tr>
                         <th>Producto</th><th style={{ width: 70 }}>Cant.</th>
-                        <th style={{ width: 110 }}>P. unit ₲</th>
+                        <th style={{ width: 110 }}>P. unit Bs</th>
                         <th className="text-right" style={{ width: 110 }}>Subtotal</th>
                         <th style={{ width: 28 }}></th>
                       </tr>
