@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import client from '../api/client';
 import { useAuth } from '../context/AuthContext';
@@ -103,10 +103,6 @@ export default function Ingreso() {
               </>
             )}
           </button>
-
-          <p className="auth-footer-text">
-            ¿Sin cuenta? <Link to="/register">Registrate aquí</Link>
-          </p>
 
           <p className="auth-hint">
             Demo: <code>admin / Admin123!</code><br />

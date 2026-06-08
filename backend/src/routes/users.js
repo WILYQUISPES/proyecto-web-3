@@ -1,9 +1,11 @@
 const express = require('express');
+const bcrypt = require('bcryptjs');
 const { body, param, validationResult } = require('express-validator');
 
 const db = require('../config/db');
 const { verifyToken } = require('../middleware/auth');
 const { requireAdmin } = require('../middleware/role');
+const { checkStrength } = require('../utils/password');
 
 const router = express.Router();
 
@@ -15,6 +17,47 @@ router.get('/', (req, res) => {
   ).all();
   res.json(rows);
 });
+
+router.post(
+  '/',
+  [
+    body('username').isString().trim().isLength({ min: 3, max: 30 })
+      .matches(/^[a-zA-Z0-9_.-]+$/).withMessage('Usuario inválido'),
+    body('email').isEmail().withMessage('Email inválido').normalizeEmail(),
+    body('password').isString().isLength({ min: 6, max: 128 })
+      .withMessage('La contraseña debe tener al menos 6 caracteres'),
+    body('role').optional().isIn(['admin', 'user']).withMessage('Rol inválido'),
+  ],
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+
+    const { username, email, password } = req.body;
+    const role = req.body.role === 'admin' ? 'admin' : 'user';
+
+    // Refuerzo de seguridad en el backend: rechazar contraseñas débiles
+    // (la validación no vive solo en el frontend).
+    const strength = checkStrength(password);
+    if (strength.level === 'debil') {
+      return res.status(400).json({ error: 'La contraseña es muy débil' });
+    }
+
+    const exists = db.prepare(
+      'SELECT id FROM users WHERE username = ? OR email = ?'
+    ).get(username, email);
+    if (exists) return res.status(409).json({ error: 'Usuario o email ya registrado' });
+
+    const hash = bcrypt.hashSync(password, 10);
+    const result = db.prepare(
+      'INSERT INTO users (username, email, password_hash, role) VALUES (?, ?, ?, ?)'
+    ).run(username, email, hash, role);
+
+    res.status(201).json({
+      id: result.lastInsertRowid,
+      username, email, role, strength,
+    });
+  }
+);
 
 router.patch(
   '/:id/toggle',

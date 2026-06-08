@@ -42,41 +42,9 @@ function consumeCaptcha(token, value) {
   return row.value === String(value).toLowerCase();
 }
 
-router.post(
-  '/register',
-  [
-    body('username').isString().trim().isLength({ min: 3, max: 30 })
-      .matches(/^[a-zA-Z0-9_.-]+$/).withMessage('Usuario inválido'),
-    body('email').isEmail().withMessage('Email inválido').normalizeEmail(),
-    body('password').isString().isLength({ min: 6, max: 128 })
-      .withMessage('La contraseña debe tener al menos 6 caracteres')
-  ],
-  (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-
-    const { username, email, password } = req.body;
-    const strength = checkStrength(password);
-
-    const exists = db.prepare(
-      'SELECT id FROM users WHERE username = ? OR email = ?'
-    ).get(username, email);
-    if (exists) return res.status(409).json({ error: 'Usuario o email ya registrado' });
-
-    const hash = bcrypt.hashSync(password, 10);
-    const result = db.prepare(
-      'INSERT INTO users (username, email, password_hash, role) VALUES (?, ?, ?, ?)'
-    ).run(username, email, hash, 'user');
-
-    res.status(201).json({
-      id: result.lastInsertRowid,
-      username,
-      email,
-      role: 'user',
-      strength
-    });
-  }
-);
+// El registro de usuarios es ADMINISTRADO: las cuentas se crean desde el panel
+// de Usuarios (POST /users, solo admin). El auto-registro publico fue removido
+// a proposito — es un sistema interno de empresa, no una app comunitaria.
 
 router.post('/password-strength', (req, res) => {
   const { password } = req.body || {};

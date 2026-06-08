@@ -2,7 +2,6 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import BarraNavegacion from './components/BarraNavegacion';
 import RutaProtegida from './components/RutaProtegida';
 import Ingreso from './pages/Ingreso';
-import Registro from './pages/Registro';
 import Panel from './pages/Panel';
 import Productos from './pages/Productos';
 import Proveedores from './pages/Proveedores';
@@ -21,7 +20,6 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/login" element={<Ingreso />} />
-          <Route path="/register" element={<Registro />} />
           <Route path="/dashboard" element={<RutaProtegida><Panel /></RutaProtegida>} />
           <Route path="/productos" element={<RutaProtegida><Productos /></RutaProtegida>} />
           <Route path="/materias-primas" element={<RutaProtegida><Materiales /></RutaProtegida>} />
