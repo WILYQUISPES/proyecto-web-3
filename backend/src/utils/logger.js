@@ -1,9 +1,19 @@
 const db = require('../config/db');
 
+function normalizeIp(ip) {
+  if (!ip) return 'desconocida';
+  let v = String(ip).trim();
+  if (v === '::1') return '127.0.0.1';
+  if (v.startsWith('::ffff:')) v = v.slice(7);
+  return v || 'desconocida';
+}
+
 function getIp(req) {
   const xfwd = req.headers['x-forwarded-for'];
-  if (xfwd) return String(xfwd).split(',')[0].trim();
-  return req.ip || req.socket?.remoteAddress || 'desconocida';
+  const raw = xfwd
+    ? String(xfwd).split(',')[0].trim()
+    : (req.ip || req.socket?.remoteAddress || '');
+  return normalizeIp(raw);
 }
 
 function logAccess({ req, userId = null, username = null, event }) {
