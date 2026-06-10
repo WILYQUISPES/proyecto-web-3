@@ -7,3 +7,5 @@ frontend/dist/
 backend/data/*.db-journal
 
 .claude/
+
+.vscode/
