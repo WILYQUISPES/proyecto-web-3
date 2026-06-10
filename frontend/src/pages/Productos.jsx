@@ -268,7 +268,6 @@ export default function Productos() {
         </div>
       )}
 
-      {/* Drawer crear/editar */}
       {showDrawer && (
         <>
           <div className="drawer-backdrop" onClick={() => setShowDrawer(false)} />
@@ -335,7 +334,6 @@ export default function Productos() {
                 </div>
               </div>
 
-              {/* Composición — materias primas */}
               <div style={{ marginTop: 'var(--s-6)', paddingTop: 'var(--s-5)', borderTop: 'var(--hairline)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--s-4)' }}>
                   <div>
@@ -397,7 +395,6 @@ export default function Productos() {
         </>
       )}
 
-      {/* Drawer ver detalle */}
       {viewDetail && (
         <>
           <div className="drawer-backdrop" onClick={() => setViewDetail(null)} />

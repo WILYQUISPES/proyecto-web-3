@@ -147,7 +147,6 @@ function seed() {
   const row = db.prepare('SELECT COUNT(*) AS c FROM users').get();
   if (row.c > 0) return;
 
-  // Usuarios
   const insertUser = db.prepare(
     'INSERT INTO users (username, email, password_hash, role) VALUES (?, ?, ?, ?)'
   );
@@ -157,7 +156,6 @@ function seed() {
   insertUser.run('usuario', 'usuario@pasofirme.bo', userHash, 'user');
   const adminId = db.prepare('SELECT id FROM users WHERE username = ?').get('admin').id;
 
-  // Proveedores (Bolivia)
   const insertSup = db.prepare(`
     INSERT INTO suppliers (name, contact_name, phone, email, address, ruc, notes)
     VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -169,7 +167,6 @@ function seed() {
   insertSup.run('Pegamentos Premium',       'Luis Benítez',     '+591 2 2332440', 'ventas@pegamentos.bo',   'Zona Sur, La Paz',                 '7890123456', 'Adhesivos PU para calzado');
   insertSup.run('Accesorios y Plantillas',  'Sofía Martínez',   '+591 3 3889110', 'info@accplantillas.bo',  'Equipetrol, Santa Cruz',           '8901234567', 'Cordones, hebillas, plantillas');
 
-  // Materias primas (precios en Bs Bolivianos)
   const insertMat = db.prepare(`
     INSERT INTO raw_materials (name, unit, stock, unit_cost, supplier_id, description)
     VALUES (?, ?, ?, ?, ?, ?)
@@ -189,7 +186,6 @@ function seed() {
   insertMat.run('Plantilla EVA acolchada',  'par',      150,   50,  6, 'Plantilla anatómica');
   insertMat.run('Caja calzado premium',     'unidad',   300,   20,  6, 'Caja cartón laminado con logo');
 
-  // Productos
   const insertProd = db.prepare(`
     INSERT INTO products (model_name, type, material, color, size, price, stock, description, created_by)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -205,7 +201,6 @@ function seed() {
   insertProd.run('Oxford Brogue',   'Zapato',    'Cuero',     'Cognac',    41, 960,  2,  'Oxford con perforaciones decorativas brogue.', adminId);
   insertProd.run('Botín Chelsea',   'Botín',     'Gamuza',    'Azul',      42, 880,  14, 'Botín Chelsea con elásticos laterales.', adminId);
 
-  // Composición
   const insertPM = db.prepare(`INSERT INTO product_materials (product_id, raw_material_id, quantity) VALUES (?, ?, ?)`);
   insertPM.run(1, 1, 0.45); insertPM.run(1, 8, 1); insertPM.run(1, 9, 0.05); insertPM.run(1, 11, 0.08); insertPM.run(1, 13, 1); insertPM.run(1, 14, 1);
   insertPM.run(2, 2, 0.85); insertPM.run(2, 8, 1); insertPM.run(2, 10, 0.10); insertPM.run(2, 11, 0.12); insertPM.run(2, 13, 1); insertPM.run(2, 14, 1);
@@ -218,7 +213,6 @@ function seed() {
   insertPM.run(9, 3, 0.50); insertPM.run(9, 8, 1); insertPM.run(9, 10, 0.07); insertPM.run(9, 11, 0.08); insertPM.run(9, 13, 1); insertPM.run(9, 14, 1);
   insertPM.run(10, 4, 0.60); insertPM.run(10, 7, 1); insertPM.run(10, 9, 0.06); insertPM.run(10, 11, 0.08); insertPM.run(10, 13, 1); insertPM.run(10, 14, 1);
 
-  // Ventas de ejemplo (fechas distribuidas)
   const insertSale = db.prepare(`
     INSERT INTO sales (sale_number, customer_name, customer_doc, subtotal, discount_pct, discount_amount, total, total_cost, profit, payment_method, notes, created_by, created_at)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now', ?))

@@ -42,10 +42,6 @@ function consumeCaptcha(token, value) {
   return row.value === String(value).toLowerCase();
 }
 
-// El registro de usuarios es ADMINISTRADO: las cuentas se crean desde el panel
-// de Usuarios (POST /users, solo admin). El auto-registro publico fue removido
-// a proposito — es un sistema interno de empresa, no una app comunitaria.
-
 router.post('/password-strength', (req, res) => {
   const { password } = req.body || {};
   res.json(checkStrength(password || ''));

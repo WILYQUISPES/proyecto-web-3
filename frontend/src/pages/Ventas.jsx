@@ -122,7 +122,6 @@ function generateVoucherPDF(sale) {
     doc.text(sale.notes, 30, y2 + 12, { maxWidth: 340 });
   }
 
-  // Footer
   const footerY = doc.internal.pageSize.height - 30;
   doc.setDrawColor(212, 202, 184);
   doc.setLineWidth(0.3);
@@ -144,7 +143,6 @@ export default function Ventas() {
   const [viewSale, setViewSale] = useState(null);
   const [search, setSearch] = useState('');
 
-  // Carrito (nueva venta)
   const [customer, setCustomer] = useState({ name: '', doc: '', payment: 'Efectivo', notes: '' });
   const [cart, setCart] = useState([]);
   const [discountPct, setDiscountPct] = useState(0);
@@ -354,7 +352,6 @@ export default function Ventas() {
         </div>
       )}
 
-      {/* Drawer: nueva venta */}
       {showDrawer && (
         <>
           <div className="drawer-backdrop" onClick={() => setShowDrawer(false)} />
@@ -372,7 +369,6 @@ export default function Ventas() {
             <form onSubmit={confirmSale}>
               {formError && <div className="alert alert-error">{formError}</div>}
 
-              {/* Cliente */}
               <div className="drawer-grid">
                 <div className="field">
                   <label className="field-label">Nombre del cliente *</label>
@@ -399,7 +395,6 @@ export default function Ventas() {
                 </div>
               </div>
 
-              {/* Buscador productos */}
               <div style={{ marginTop: 'var(--s-5)', paddingTop: 'var(--s-5)', borderTop: 'var(--hairline)' }}>
                 <div className="eyebrow" style={{ marginBottom: 'var(--s-2)' }}>Catálogo disponible</div>
                 <div style={{ position: 'relative', marginBottom: 'var(--s-3)' }}>
@@ -439,7 +434,6 @@ export default function Ventas() {
                 </div>
               </div>
 
-              {/* Carrito */}
               <div style={{ marginTop: 'var(--s-5)', paddingTop: 'var(--s-5)', borderTop: 'var(--hairline)' }}>
                 <div className="eyebrow" style={{ marginBottom: 'var(--s-3)' }}>
                   Carrito ({cart.length} {cart.length === 1 ? 'producto' : 'productos'})
@@ -490,7 +484,6 @@ export default function Ventas() {
                 )}
               </div>
 
-              {/* Totales */}
               {cart.length > 0 && (
                 <div style={{ marginTop: 'var(--s-5)', padding: 'var(--s-4)', background: 'var(--parchment)', borderRadius: 'var(--r-md)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', fontFamily: 'var(--f-mono)', fontSize: 13 }}>
@@ -512,7 +505,6 @@ export default function Ventas() {
                 </div>
               )}
 
-              {/* Notas */}
               <div className="field" style={{ marginTop: 'var(--s-4)' }}>
                 <label className="field-label">Notas (opcional)</label>
                 <textarea className="input input-boxed" rows="2" maxLength={500}
@@ -532,7 +524,6 @@ export default function Ventas() {
         </>
       )}
 
-      {/* Drawer: ver venta */}
       {viewSale && (
         <>
           <div className="drawer-backdrop" onClick={() => setViewSale(null)} />

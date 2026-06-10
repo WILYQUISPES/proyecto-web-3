@@ -35,8 +35,6 @@ router.post(
     const { username, email, password } = req.body;
     const role = req.body.role === 'admin' ? 'admin' : 'user';
 
-    // Refuerzo de seguridad en el backend: rechazar contraseñas débiles
-    // (la validación no vive solo en el frontend).
     const strength = checkStrength(password);
     if (strength.level === 'debil') {
       return res.status(400).json({ error: 'La contraseña es muy débil' });

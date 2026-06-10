@@ -1,58 +1,43 @@
-/* ========================================================== */
-/*  PASOFIRME — Editorial Craft Design System                  */
-/* ========================================================== */
-
 :root {
-  /* Surfaces */
   --paper:        #FAF6ED;
   --parchment:    #F4EDE0;
   --parchment-2:  #EDE4D2;
 
-  /* Ink */
   --ink:          #1C1815;
   --ink-2:        #4A3F35;
   --ink-3:        #8B7E6E;
 
-  /* Leather accents */
   --leather:      #6B3410;
   --patina:       #8B6F47;
   --brass:        #B8893A;
   --cognac:       #A0522D;
 
-  /* State */
   --rust:         #A04822;
   --moss:         #4A5D3A;
   --amber:        #C77D2C;
 
-  /* Lines */
   --stone:        #D4CAB8;
   --stone-2:      #C2B59E;
 
   --highlight:    #F5D58B;
 
-  /* Typography */
   --f-display: 'Fraunces', 'Times New Roman', serif;
   --f-sans:    'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
   --f-mono:    'Geist Mono', 'Menlo', monospace;
 
-  /* Spacing */
   --s-1: 4px;  --s-2: 8px;  --s-3: 12px;
   --s-4: 16px; --s-5: 24px; --s-6: 32px;
   --s-7: 48px; --s-8: 64px; --s-9: 96px; --s-10: 128px;
 
-  /* Radius */
   --r-xs: 2px; --r-sm: 4px; --r-md: 6px; --r-lg: 10px;
 
-  /* Lines */
   --hairline:     1px solid var(--stone);
   --hairline-2:   1px solid var(--stone-2);
   --hairline-ink: 1px solid var(--ink);
 
-  /* Shadows (uso muy puntual) */
   --shadow-drawer: -24px 0 48px -16px rgba(28, 24, 21, 0.15);
   --shadow-modal:    0 24px 64px -16px rgba(28, 24, 21, 0.18);
 
-  /* Easing */
   --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in:    cubic-bezier(0.7, 0, 0.84, 0);
   --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
@@ -73,7 +58,6 @@ body {
   min-height: 100vh;
 }
 
-/* Noise overlay global muy sutil — clave para no parecer flat-AI */
 body::before {
   content: '';
   position: fixed; inset: 0;
@@ -96,10 +80,6 @@ code, kbd {
   border-radius: var(--r-xs);
   color: var(--leather);
 }
-
-/* ========================================================== */
-/* TYPOGRAPHY HELPERS                                          */
-/* ========================================================== */
 
 .eyebrow {
   font-family: var(--f-mono);
@@ -126,10 +106,6 @@ code, kbd {
 .mono   { font-family: var(--f-mono); }
 .muted  { color: var(--ink-3); }
 
-/* ========================================================== */
-/* PAGE ENTRY ANIMATION (stagger)                              */
-/* ========================================================== */
-
 .page > *:not(.drawer):not(.drawer-backdrop) {
   opacity: 0;
   transform: translateY(12px);
@@ -148,10 +124,6 @@ code, kbd {
 @media (prefers-reduced-motion: reduce) {
   .page > *:not(.drawer):not(.drawer-backdrop) { opacity: 1; transform: none; animation: none; }
 }
-
-/* ========================================================== */
-/* SHELL + SIDEBAR — Editorial craft, vertical                 */
-/* ========================================================== */
 
 .shell {
   display: flex;
@@ -332,7 +304,6 @@ code, kbd {
   background: rgba(160, 72, 34, 0.04);
 }
 
-/* Sidebar responsive: en pantallas chicas pasa a barra superior */
 @media (max-width: 860px) {
   .shell { flex-direction: column; }
   .sidebar {
@@ -375,10 +346,6 @@ code, kbd {
   .sidebar-logout { width: auto; }
   .sidebar-user-meta { display: none; }
 }
-
-/* ========================================================== */
-/* BUTTONS                                                      */
-/* ========================================================== */
 
 .btn {
   font-family: var(--f-sans);
@@ -452,10 +419,6 @@ code, kbd {
 .btn .arrow { transition: transform 240ms var(--ease-out); }
 .btn:hover .arrow { transform: translateX(4px); }
 
-/* ========================================================== */
-/* INPUTS — underline editorial                                */
-/* ========================================================== */
-
 .field { margin-bottom: var(--s-4); }
 .field-label {
   display: block;
@@ -514,10 +477,6 @@ textarea.input { resize: vertical; min-height: 80px; }
 }
 .check input { accent-color: var(--ink); }
 
-/* ========================================================== */
-/* ALERTS                                                       */
-/* ========================================================== */
-
 .alert {
   padding: var(--s-3) var(--s-4);
   border-radius: var(--r-sm);
@@ -535,10 +494,6 @@ textarea.input { resize: vertical; min-height: 80px; }
 .alert-error::before { background: var(--rust); }
 .alert-ok { background: rgba(74, 93, 58, 0.1); color: var(--moss); }
 .alert-ok::before { background: var(--moss); }
-
-/* ========================================================== */
-/* AUTH PAGES — split editorial                                */
-/* ========================================================== */
 
 .auth-split {
   display: grid;
@@ -623,16 +578,11 @@ textarea.input { resize: vertical; min-height: 80px; }
 }
 .auth-hint code { font-size: 10px; padding: 1px 5px; }
 
-/* Submit dentro de auth */
 .auth-card .btn-primary {
   width: 100%;
   margin-top: var(--s-4);
   padding: 15px;
 }
-
-/* ========================================================== */
-/* PASSWORD STRENGTH                                            */
-/* ========================================================== */
 
 .strength { margin-top: var(--s-3); }
 .strength-bar {
@@ -690,10 +640,6 @@ textarea.input { resize: vertical; min-height: 80px; }
 .strength-tips li.ok { color: var(--moss); }
 .strength-tips li.ok::before { content: '●'; }
 
-/* ========================================================== */
-/* CAPTCHA                                                      */
-/* ========================================================== */
-
 .captcha { margin-top: var(--s-3); }
 .captcha-row {
   display: flex; align-items: stretch; gap: var(--s-3);
@@ -730,10 +676,6 @@ textarea.input { resize: vertical; min-height: 80px; }
 }
 .captcha-refresh:hover svg { transform: rotate(180deg); }
 .captcha-refresh svg { transition: transform 400ms var(--ease-out); }
-
-/* ========================================================== */
-/* PAGES                                                        */
-/* ========================================================== */
 
 .page {
   max-width: 1280px;
@@ -773,10 +715,6 @@ textarea.input { resize: vertical; min-height: 80px; }
   color: var(--ink-3);
 }
 
-/* ========================================================== */
-/* TOOLBAR                                                      */
-/* ========================================================== */
-
 .toolbar {
   display: flex;
   gap: var(--s-3);
@@ -789,10 +727,6 @@ textarea.input { resize: vertical; min-height: 80px; }
 .toolbar .input { width: auto; min-width: 220px; }
 .toolbar .check { padding: 10px 0; }
 .toolbar-spacer { flex: 1; }
-
-/* ========================================================== */
-/* STAT CARDS                                                   */
-/* ========================================================== */
 
 .stats-grid {
   display: grid;
@@ -867,10 +801,6 @@ textarea.input { resize: vertical; min-height: 80px; }
   color: var(--ink-3);
 }
 
-/* ========================================================== */
-/* CHARTS                                                       */
-/* ========================================================== */
-
 .charts-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
@@ -903,10 +833,6 @@ textarea.input { resize: vertical; min-height: 80px; }
   color: var(--ink-3);
 }
 .chart-container { position: relative; height: 280px; }
-
-/* ========================================================== */
-/* TABLE — editorial dense                                     */
-/* ========================================================== */
 
 .table-card {
   background: var(--paper);
@@ -997,7 +923,6 @@ textarea.input { resize: vertical; min-height: 80px; }
   color: var(--ink-3);
 }
 
-/* Tags / chips */
 .tag {
   display: inline-block;
   font-family: var(--f-mono);
@@ -1036,7 +961,6 @@ textarea.input { resize: vertical; min-height: 80px; }
 .tag-event.LOGIN_FAIL,
 .tag-event.LOGIN_FAIL_CAPTCHA { border-color: var(--rust); color: var(--rust); }
 
-/* Stock indicator */
 .stock-pill {
   display: inline-flex; align-items: center; gap: 8px;
   font-family: var(--f-mono); font-size: 12px;
@@ -1051,7 +975,6 @@ textarea.input { resize: vertical; min-height: 80px; }
 .stock-pill.low::before    { background: var(--amber); }
 .stock-pill.danger::before { background: var(--rust); }
 
-/* Status badge usuarios */
 .status {
   font-family: var(--f-mono);
   font-size: 10px;
@@ -1067,7 +990,6 @@ textarea.input { resize: vertical; min-height: 80px; }
 .status.inactive { color: var(--ink-3); }
 .status.inactive::before { background: var(--ink-3); }
 
-/* Acciones de fila — solo on hover */
 .row-actions {
   display: flex; gap: var(--s-2);
   opacity: 0;
@@ -1106,10 +1028,6 @@ textarea.input { resize: vertical; min-height: 80px; }
   white-space: nowrap;
   letter-spacing: 0.02em;
 }
-
-/* ========================================================== */
-/* DRAWER (en lugar de modal)                                  */
-/* ========================================================== */
 
 .drawer-backdrop {
   position: fixed; inset: 0;
@@ -1183,10 +1101,6 @@ textarea.input { resize: vertical; min-height: 80px; }
   from { opacity: 0; } to { opacity: 1; }
 }
 
-/* ========================================================== */
-/* REPORT PAGE                                                  */
-/* ========================================================== */
-
 .report-summary {
   background: var(--paper);
   border: var(--hairline);
@@ -1214,10 +1128,6 @@ textarea.input { resize: vertical; min-height: 80px; }
   color: var(--ink-3);
   margin-top: 4px;
 }
-
-/* ========================================================== */
-/* RESPONSIVE                                                   */
-/* ========================================================== */
 
 @media (max-width: 920px) {
   .auth-split { grid-template-columns: 1fr; }
